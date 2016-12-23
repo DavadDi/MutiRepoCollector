@@ -10,6 +10,7 @@
 ## 1. 运行程序
 
  	$ yum install python-pip
+ 	$ sudo pip install requests
 	$ sudo pip install tornado
 	$ python github_repo_info.py
 	
@@ -23,6 +24,8 @@
 根据网络情况可能会等待几秒：可以点击表头进行相关排序。
 
 ![image](go_orm_v2.png)
+
+在线测试：[www.do1618.com](http://www.do1618.com:8888/?repos=octokit/go-octokit,go-xorm/xorm,go-gorp/gorp,eaigner/hood,coocood/qbs,eaigner/jet,astaxie/beedb,gosexy/db,jinzhu/gorm)
 
 
 ### 3. TODO
