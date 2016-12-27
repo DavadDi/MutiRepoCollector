@@ -27,9 +27,55 @@
 
 在线测试：[www.do1618.com](http://www.do1618.com:8888/?repos=octokit/go-octokit,go-xorm/xorm,go-gorp/gorp,eaigner/hood,coocood/qbs,eaigner/jet,astaxie/beedb,gosexy/db,jinzhu/gorm)
 
+### 3. pylint 检查集成
 
-### 3. TODO
-添加编程语言和根据stars进行图片显示。
+参考：[Pycharm 集成Pylint](https://my.oschina.net/niuqingshan/blog/637893)
+
+##### 3.1 pylint与PyCharm集成
+
+首先编写一个pylint.py
+
+	#! /usr/bin/python
+	# encoding:utf8
+
+	import sys
+	import subprocess
+
+	PYLINT = 'pylint'
+	FILE_PATH = sys.argv[1]
+
+	def run_pylint():
+    	if FILE_PATH == "":
+        	return "Please input filename"
+
+    	command = [PYLINT, FILE_PATH, "-f", "parseable"]  # 指定输出格式]
+    	try:
+        	output = subprocess.check_output(command, stderr=subprocess.STDOUT)
+    	except subprocess.CalledProcessError as err:
+        	output = err.output
+    	return output
+
+	def main():
+    	if not FILE_PATH.endswith(".py"):
+        	print "pylint not support file type"
+        	return
+        	
+    	output = run_pylint()
+    	print output
+
+	if __name__ == '__main__':
+    	main()
+
+[pylint.py](pylint.py)
+
+#### Pycharm添加扩展工具
+
+PyCharm -> Pereferences -> Tools ->  External Tools: 
+
+![img](pycharm.png)
+
+### 4. TODO
+根据stars进行图片显示。
 	   
 	   
 	   

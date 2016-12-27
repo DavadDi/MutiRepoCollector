@@ -6,22 +6,24 @@ http://www.kryogenix.org/code/browser/sorttable/
 https://developer.github.com/v3/
 """
 
-import requests
 import json
 import os
+import requests
 
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 
-from tornado.template import Template
 from tornado.options import define, options, parse_command_line
 
 define("port", default=8888, help="run on the given port", type=int)
 define("debug", default=False, help="run in debug mode")
 
-def get_repo_info(full_name):
 
+def get_repo_info(full_name):
+    """ Parameter: full name of github repos
+        Return repo record info or nil.
+    """
     repo_key = [
         "full_name",
         "language",
@@ -39,19 +41,22 @@ def get_repo_info(full_name):
     base_url = "https://api.github.com/repos/"
     url = base_url + full_name
 
-    r = requests.get(url)
+    resp = requests.get(url)
 
     rec = {}
 
-    if r.status_code == 200:
-        repo_infos = json.loads(r.content)
+    if resp.status_code == 200:
+        repo_infos = json.loads(resp.content)
 
         for key in repo_key:
             rec[key] = repo_infos[key]
 
     return rec
 
+# pylint: disable=W0223
 class RepoInfoHandler(tornado.web.RequestHandler):
+    """ Provide server side function
+    """
     def get(self):
         repos_str = self.get_argument("repos", default="", strip=True)
 
@@ -69,25 +74,11 @@ class RepoInfoHandler(tornado.web.RequestHandler):
                 recs.append(rec)
 
         self.render("repos.html", recs=recs)
-        #self.write("hello")
-'''
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write("Hello, world")
 
-def make_app():
-    return tornado.web.Application([
-        (r"/", MainHandler),
-    ])
-
-if __name__ == "__main__":
-    app = make_app()
-    app.listen(8888)
-    tornado.ioloop.IOLoop.current().start()
-'''
-
-if __name__ == '__main__':
-
+def run_main():
+    """ run_main function
+        :return: nil
+    """
     parse_command_line()
     app = tornado.web.Application(
         [
@@ -103,5 +94,5 @@ if __name__ == '__main__':
     app.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
 
-
-
+if __name__ == '__main__':
+    run_main()
